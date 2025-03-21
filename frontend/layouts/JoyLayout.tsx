@@ -10,11 +10,6 @@ import {
 } from '@mui/joy';
 import { type ReactNode, useEffect, useState } from 'react';
 import '../layouts/style.css';
-declare module '@mui/joy/styles' {
-    interface Palette {
-        secondary: typeof secondary;
-    }
-}
 
 const primary = {
     50: '#f2faff',
