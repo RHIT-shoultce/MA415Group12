@@ -5,7 +5,7 @@ import vike from "vike/plugin";
 
 export default defineConfig({
   plugins: [
-    vike({}),
+    vike({ prerender: true }),
     devServer({
       entry: "hono-entry.ts",
 

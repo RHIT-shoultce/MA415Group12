@@ -1,6 +1,6 @@
-import vikeReact from "vike-react/config";
-import type { Config } from "vike/types";
-import Layout from "../layouts/LayoutDefault.js";
+import vikeReact from 'vike-react/config';
+import type { Config } from 'vike/types';
+import { LayoutDefault as Layout } from '../layouts/LayoutDefault'
 
 // Default config (can be overridden by pages)
 // https://vike.dev/config
@@ -10,8 +10,9 @@ export default {
   Layout,
 
   // https://vike.dev/head-tags
-  title: "My Vike App",
-  description: "Demo showcasing Vike",
+  title: 'Shot Sense',
+  description: '',
 
+  passToClient: ['user'],
   extends: vikeReact,
 } satisfies Config;
