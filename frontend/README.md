@@ -1,7 +1,7 @@
-Generated with [vike.dev/new](https://vike.dev/new) ([version 413](https://www.npmjs.com/package/create-vike/v/0.0.413)) using this command:
+Generated with [vike.dev/new](https://vike.dev/new) ([version 426](https://www.npmjs.com/package/create-vike/v/0.0.426)) using this command:
 
 ```sh
-npm create vike@latest --- --react --hono
+npm create vike@latest --- --react --hono --prettier
 ```
 
 ## Contents

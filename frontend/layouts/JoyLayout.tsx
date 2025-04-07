@@ -12,16 +12,16 @@ import { type ReactNode, useEffect, useState } from 'react';
 import '../layouts/style.css';
 
 const primary = {
-    50: '#e8f8ec', // Lightest green
+    50: '#e8f8ec',
     100: '#d1f1d9',
-    200: '#a4e4b2', // Lighter green
-    300: '#70d788', // Main green shade
-    400: '#4cc85e', // Slightly darker green
-    500: '#2db940', // Primary green
+    200: '#a4e4b2',
+    300: '#70d788',
+    400: '#4cc85e',
+    500: '#2db940',
     600: '#24912e',
-    700: '#1a6a21', // Dark green
-    800: '#114216', // Darker green
-    900: '#0c3011', // Almost black green
+    700: '#1a6a21',
+    800: '#114216',
+    900: '#0c3011',
     solidBg: 'var(--joy-palette-primary-400)',
     solidActiveBg: 'var(--joy-palette-primary-500)',
     outlinedBorder: 'var(--joy-palette-primary-500)',
@@ -36,16 +36,16 @@ const primary = {
 
 
 const secondary = {
-    50: '#f6e8ff', // Lightest purple
+    50: '#f6e8ff',
     100: '#e6ccff',
-    200: '#c299ff', // Lighter purple
-    300: '#9966ff', // Main purple shade
-    400: '#8041ff', // Slightly darker purple
-    500: '#6623e0', // Primary purple
+    200: '#c299ff',
+    300: '#9966ff',
+    400: '#8041ff',
+    500: '#6623e0',
     600: '#5017b3',
-    700: '#3a0d85', // Dark purple
-    800: '#28085c', // Darker purple
-    900: '#19063a', // Almost black purple
+    700: '#3a0d85',
+    800: '#28085c',
+    900: '#19063a',
     solidBg: 'var(--joy-palette-secondary-400)',
     solidHoverBg: 'var(--joy-palette-secondary-600)',
     solidActiveBg: 'var(--joy-palette-secondary-500)',

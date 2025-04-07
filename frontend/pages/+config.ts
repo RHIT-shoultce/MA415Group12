@@ -15,4 +15,5 @@ export default {
 
   passToClient: ['user'],
   extends: vikeReact,
+
 } satisfies Config;
