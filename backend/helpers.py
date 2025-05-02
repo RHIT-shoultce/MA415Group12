@@ -267,3 +267,22 @@ def print_dataset_summary(summary):
     
     if 'start_date' in summary and 'end_date' in summary:
         print(f"\nDate range: {summary['start_date']} to {summary['end_date']}")
+        
+    if 'defender_distance' in summary:
+        dd = summary['defender_distance']
+        print("\nDefender distance (feet):")
+        print(f"  - Range: {dd['min']:.1f} to {dd['max']:.1f}")
+        print(f"  - Mean: {dd['mean']:.2f}")
+        print(f"  - Median: {dd['median']:.2f}")
+    
+    if 'shooter_height' in summary:
+        sh = summary['shooter_height']
+        print("\nShooter height (inches):")
+        print(f"  - Range: {sh['min']:.1f} to {sh['max']:.1f}")
+        print(f"  - Mean: {sh['mean']:.2f}")
+        print(f"  - Median: {sh['median']:.2f}")
+        
+        
+def analyze_shot_distance(df):
+    """Analyze how shot success probability changes with distance"""
+    print("\nAnalyzing shot success rate by distance...")
