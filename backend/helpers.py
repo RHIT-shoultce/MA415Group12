@@ -78,89 +78,60 @@ def process_score(score):
     else:
         return '-1-0'
     
-import pandas as pd
-import os
-import re
-from datetime import datetime
-
-def load_and_process_nba_data(data_path, sample_file=None):
+def load_and_process_nba_height_data(data_path, file_name='NBA_Height.csv'):
     """
-    Load and process NBA shot data from CSV files.
+    Load and process NBA height data from CSV file.
     
     Args:
-        data_path (str): Path to the directory containing the CSV files.
-        sample_file (str, optional): If provided, only process this specific file.
+        data_path (str): Path to the directory containing the CSV file.
+        file_name (str): Name of the CSV file.
         
     Returns:
-        pd.DataFrame: Processed DataFrame with all NBA shot data.
+        pd.DataFrame: Processed DataFrame with NBA height data.
     """
-    # Get all CSV files in the directory if no sample file is provided
-    if sample_file:
-        files = [sample_file]
-    else:
-        files = [f for f in os.listdir(data_path) if f.endswith('.csv')]
+    file_path = os.path.join(data_path, file_name)
     
-    dfs = []
-    
-    for file in files:
-        file_path = os.path.join(data_path, file)
-        
-        # Read the CSV file
-        df = pd.read_csv(file_path)
-        
-        # Drop the first empty column and unnamed columns
-        columns_to_drop = [col for col in df.columns if col == '' or col.startswith('Unnamed')]
-        df = df.drop(columns=columns_to_drop)
-        
-        # Convert data types
-        df['shotX'] = df['shotX'].astype(float)
-        df['shotY'] = df['shotY'].astype(float)
-        df['distance'] = df['distance'].astype(float)
-        
-        # Convert 'made' to boolean if it's not already
-        if df['made'].dtype != bool:
-            df['made'] = df['made'].astype(bool)
-        
-        # Process the score column
-        df['score'] = df['score'].apply(process_score)
-        
-        # Add a date column based on the filename (YYYYMMDD format)
-        date_str = os.path.splitext(file)[0]  # Remove file extension
-        try:
-            date = datetime.strptime(date_str, '%Y%m%d')
-            df['date'] = date
-        except ValueError:
-            # If the filename is not in the expected format, use NaT
-            df['date'] = pd.NaT
-        
-        dfs.append(df)
-    
-    # Combine all dataframes
-    if dfs:
-        combined_df = pd.concat(dfs, ignore_index=True)
-        return combined_df
-    else:
+    if not os.path.exists(file_path):
+        print(f"Error: File not found at {file_path}")
         return pd.DataFrame()
-
-def process_score(score):
-    """
-    Process the score column to ensure it follows the format 'score-score'.
-    If it doesn't, replace with '-1-0'.
     
-    Args:
-        score (str): The score string to process.
-        
-    Returns:
-        str: Processed score string.
-    """
-    if not isinstance(score, str):
-        return '-1-0'
     
-    # Check if the score follows the pattern 'number-number'
-    if re.match(r'^\d+-\d+$', score):
-        return score
-    else:
-        return '-1-0'
+    df = pd.read_csv(file_path)
+    
+   
+    df['SHOT_DIST'] = df['SHOT_DIST'].astype(float)
+    df['TOUCH_TIME'] = df['TOUCH_TIME'].astype(float)
+    df['DRIBBLES'] = df['DRIBBLES'].astype(int)
+    df['CLOSE_DEF_DIST'] = df['CLOSE_DEF_DIST'].astype(float)
+    df['SHOOTER_height'] = df['SHOOTER_height'].astype(float)
+    df['DEFENDER_height'] = df['DEFENDER_height'].astype(float)
+    
+    df['FGM'] = df['FGM'].astype(bool)    
+    df['made'] = df['SHOT_RESULT'].apply(lambda x: True if x.lower() == 'made' else False)
+    
+    # Example: "12/30/1899 12:23:45 AM" -> "12:23:45"
+    df['time_remaining'] = df['GAME_CLOCK'].str.extract(r'(\d+:\d+:\d+)')
+    df['quarter'] = df['PERIOD'].astype(str)
+    
+    
+    bins = [0, 3, 10, 16, 23, 100]
+    labels = ['0-3 ft', '3-10 ft', '10-16 ft', '16-23 ft', '23+ ft']
+    df['distance_bin'] = pd.cut(df['SHOT_DIST'], bins=bins, labels=labels)
+    
+    def_bins = [0, 2, 4, 6, 100]
+    def_labels = ['Tight (0-2 ft)', 'Close (2-4 ft)', 'Open (4-6 ft)', 'Wide Open (6+ ft)']
+    df['defender_distance_bin'] = pd.cut(df['CLOSE_DEF_DIST'], bins=def_bins, labels=def_labels)
+    
+    df['height_diff'] = df['SHOOTER_height'] - df['DEFENDER_height']
+    # (e.g., "GSW vs. MIA" -> "GSW", "MIA")
+    df[['team', 'opp']] = df['MATCHUP'].str.extract(r'([A-Z]{3}) [vV][sS][.] ([A-Z]{3})')
+    df['shot_type'] = df['PTS_TYPE'].apply(lambda x: '3PT Field Goal' if x == 3 else '2PT Field Goal')
+    df['player'] = df['player_name']
+    
+    
+    return df
+    
+    
 
 def get_dataset_summary(df):
     """
@@ -195,12 +166,77 @@ def get_dataset_summary(df):
     summary['teams'] = df['team'].nunique()
     summary['players'] = df['player'].nunique()
     
-    
-    if 'date' in df.columns and not df['date'].isna().all():
+    if df['date'].dtype == 'object':
+        try:
+            summary['start_date'] = pd.to_datetime(df['date'].min()).strftime('%Y-%m-%d')
+            summary['end_date'] = pd.to_datetime(df['date'].max()).strftime('%Y-%m-%d')
+        except Exception as e:
+            print(f"Warning: Could not format date range - {e}")
+            summary['start_date'] = str(df['date'].min())
+            summary['end_date'] = str(df['date'].max())
+    else:
         summary['start_date'] = df['date'].min().strftime('%Y-%m-%d')
         summary['end_date'] = df['date'].max().strftime('%Y-%m-%d')
     
     return summary
+
+def get_height_dataset_summary(df):
+    """
+    Generate a summary of the NBA height dataset for the assignment.
+    
+    Args:
+        df (pd.DataFrame): The processed NBA height data.
+        
+    Returns:
+        dict: A dictionary containing dataset summary statistics.
+    """
+    summary = {}
+    summary['total_examples'] = len(df)
+    summary['problem_type'] = 'Regression'
+    summary['target'] = 'Shot probability (0.0-1.0)'
+    
+    made_shots = df['made'].sum()
+    missed_shots = len(df) - made_shots
+    summary['made_shots'] = int(made_shots)
+    summary['missed_shots'] = int(missed_shots)
+    summary['made_percentage'] = round(made_shots / len(df) * 100, 2) if len(df) > 0 else 0
+    
+    if len(df) > 0:
+        summary['target_distribution'] = {
+            'min': 0.0,
+            'max': 1.0,
+            'mean': summary['made_percentage'] / 100,
+        }
+    
+    summary['shot_types'] = df['shot_type'].value_counts().to_dict()
+    summary['teams'] = df['team'].nunique()
+    summary['players'] = df['player'].nunique()
+    
+    # Defender distance stats
+    summary['defender_distance'] = {
+        'min': df['CLOSE_DEF_DIST'].min(),
+        'max': df['CLOSE_DEF_DIST'].max(),
+        'mean': df['CLOSE_DEF_DIST'].mean(),
+        'median': df['CLOSE_DEF_DIST'].median()
+    }
+    
+    # Height stats
+    summary['shooter_height'] = {
+        'min': df['SHOOTER_height'].min(),
+        'max': df['SHOOTER_height'].max(),
+        'mean': df['SHOOTER_height'].mean(),
+        'median': df['SHOOTER_height'].median()
+    }
+    
+    summary['defender_height'] = {
+        'min': df['DEFENDER_height'].min(),
+        'max': df['DEFENDER_height'].max(),
+        'mean': df['DEFENDER_height'].mean(),
+        'median': df['DEFENDER_height'].median()
+    }
+    
+    return summary
+
 
 
 def print_dataset_summary(summary):
