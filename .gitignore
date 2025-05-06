@@ -174,15 +174,13 @@ cython_debug/
 .pypirc
 
 
-# Data files
-data/
-*.csv
-*.json
-*.parquet
-*.h5
-*.pkl
-*.joblib
-*.pickle
+# # Data files
+# *.json
+# *.parquet
+# *.h5
+# *.pkl
+# *.joblib
+# *.pickle
 
 # Except example data samples
 !ml/data/sample/*.csv
