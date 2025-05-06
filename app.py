@@ -20,10 +20,10 @@ from lasso_classifier import (
     lasso_classifier
 )
     
-general_data_path = os.path.join('backend', 'data', '2001-2022_data', 'nba')
-height2014_data_path = os.path.join('backend', 'data', '2014-2015_original')
-processed_path = os.path.join('backend', 'data', 'processed_nba_shots.csv')
-sample_file = '20001031.csv'
+#general_data_path = os.path.join('data', '2001-2022_data', 'nba')
+height2014_data_path = os.path.join('data')
+#processed_path = os.path.join('backend', 'data', 'processed_nba_shots.csv')
+#sample_file = '20001031.csv'
 
 def main():
     # Get and print the summary for the sample

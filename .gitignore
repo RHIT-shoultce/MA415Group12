@@ -215,5 +215,4 @@ dist/
 .env.test.local
 .env.production.local
 
-backend/data
-backend/dataZipped
+dataZipped.zip
