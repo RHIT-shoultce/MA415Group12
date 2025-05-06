@@ -175,12 +175,13 @@ cython_debug/
 
 
 # # Data files
-# *.json
-# *.parquet
-# *.h5
-# *.pkl
-# *.joblib
-# *.pickle
+*.json
+*.parquet
+*.h5
+*.pkl
+*.joblib
+*.pickle
+*.csv
 
 # Except example data samples
 !ml/data/sample/*.csv
