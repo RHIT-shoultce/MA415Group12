@@ -10,9 +10,9 @@ def lasso_classifier(X, y):
     print('\nTraining Lasso Model\n')
     lasso = Lasso()
     grid = {'alpha':[0.1,1,10]}
-    lasso = grid_search(lasso,grid, X_train, y_train)
+    (lasso, _) = grid_search(lasso, grid, X_train, y_train)
 
-    coef = pd.Series(lasso.coef_,index=X.columns)
+    coef = pd.Series(lasso.coef_, index=X.columns)
     print('\nLasso Coef Values: ', coef.sort_values())
 
     print('\n\nLasso Training R2: ', lasso.score(X_train, y_train))

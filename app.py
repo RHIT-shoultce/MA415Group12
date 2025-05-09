@@ -22,8 +22,8 @@ from lasso_classifier import (
     
 #general_data_path = os.path.join('data', '2001-2022_data', 'nba')
 height2014_data_path = os.path.join('data')
-#processed_path = os.path.join('backend', 'data', 'processed_nba_shots.csv')
-#sample_file = '20001031.csv'
+#processed_path = os.path.join('data', 'processed_nba_shots.csv')
+#sample_file = 'NBA_Heights.csv'
 
 def main():
     # Get and print the summary for the sample
@@ -37,7 +37,7 @@ def main():
     # print_dataset_summary(sample_summary)
     
     
-    # Get and print the summary for the full dataset
+    # #Get and print the summary for the full dataset
     # full_summary = None;
     # if(os.path.exists(processed_path)):
     #     print(f"\nLoading processed data from {processed_path}...")
@@ -58,9 +58,11 @@ def main():
     full_df = height_df
     
     X, y = clean_data(full_df)
+
+    print(X.shape)
     
     knn_classifier(X, y)
-    #lasso_classifier(X, y)
+    #lasso_classifier(X, y.astype(int))
     
     
 
