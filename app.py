@@ -19,6 +19,8 @@ from knn_classifier import (
 from lasso_classifier import (
     lasso_classifier
 )
+from random_forest_classifier import random_forest_classifier
+from gradient_boosting_classifier import gradient_boosting_classifier
     
 #general_data_path = os.path.join('data', '2001-2022_data', 'nba')
 height2014_data_path = os.path.join('data')
@@ -61,8 +63,11 @@ def main():
 
     print(X.shape)
     
-    knn_classifier(X, y)
-    #lasso_classifier(X, y.astype(int))
+    # knn_classifier(X, y)
+    # lasso_classifier(X, y.astype(int))
+    # random_forest_classifier(X, y)
+    # gradient_boosting_classifier(X,y)
+
     
     
 

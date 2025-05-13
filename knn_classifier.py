@@ -11,14 +11,16 @@ def knn_classifier(X, y, n_neighbors=20):
     results = pd.DataFrame()
 
     print('\nTraining KNN Model\n')
-    grid = {'n_neighbors':range(10,1001, 50)}
+    grid = {'n_neighbors':range(50,1001, 50)}
     knn = KNeighborsClassifier()
     (knn, results) = grid_search(knn, grid, X_train, y_train)
     
     print('\n\nTraining R2: ', knn.score(X_train, y_train))
     print('\nTesting R2: ', knn.score(X_test, y_test))
 
-    ax1 = results.plot.line(x='nehibors', y='train R2')
-    results.plot.line(x='nehibors', y='validation R2', ax=ax1)
+    # ax1 = results.plot.line(x='neighbors', y='train R2')
+    # results.plot.line(x='neighbors', y='validation R2', ax=ax1)
+
+    knn
 
     plt.show()
