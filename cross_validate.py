@@ -8,11 +8,7 @@ def grid_search(model, grid, X_train, y_train):
 
     print(' Optimal Parameters:', gridCV.best_params_)
     print(' Optimal Valid R2 =',gridCV.best_score_)
-
-    try:
-        results['neighbors'] = grid['n_neighbors']
-    except KeyError:
-        pass
+    
     results['train R2'] = gridCV.cv_results_['mean_train_score']
     results['validation R2'] = gridCV.cv_results_['mean_test_score']
     
