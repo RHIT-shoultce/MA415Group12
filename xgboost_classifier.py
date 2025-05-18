@@ -1,4 +1,4 @@
-from xgboost_classifier import XGBClassifier
+from xgboost import XGBClassifier
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from cross_validate import (

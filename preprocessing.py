@@ -14,7 +14,8 @@ def clean_data(df):
     
     #start by dropping player, team, matchID, opp
     df = df.drop(['ID', 'GAME_ID', 'MATCHUP', 'LOCATION', 'GAME_CLOCK', 'PTS', 'SHOT_RESULT','player_name',
-                            'CLOSEST_DEFENDER1', 'made', 'time_remaining', 'shot_type', 'player', 'CLOSEST_DEFENDER'], axis=1)
+                            'CLOSEST_DEFENDER1', 'made', 'time_remaining', 'shot_type', 'player', 'CLOSEST_DEFENDER', 
+                            'player_id', 'CLOSEST_DEFENDER_PLAYER_ID'], axis=1)
     
     X = df.drop('FGM', axis=1)
     y = df['FGM']
